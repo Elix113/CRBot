@@ -1,90 +1,65 @@
-from io import BytesIO
-from inference_sdk import InferenceHTTPClient
-import requests
-import base64
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+import random
+import numpy as np
+from collections import deque
 
-import utils
-
-class LocalAgent:
-
-    def __init__(self, api_key, workspace, field_detection, card_detection):
-        self.workspace = workspace
-        self.field_detection = field_detection
-        self.card_detection = card_detection
-        self.client = InferenceHTTPClient(
-            api_url="http://localhost:9001",
-            api_key=api_key
-        )
-
-    def detect_field(self, field_crop):
-        result = self.client.run_workflow(
-            workspace_name=self.workspace,
-            workflow_id=self.field_detection,
-            images={
-                "image": utils.to_base64(field_crop)
-            },
-            use_cache=True
-        )
-        return result
+# 1. Q-Network
+class QNetwork(nn.Module):
+    def __init__(self, state_size, action_size):
+        super().__init__()
+        self.fc1 = nn.Linear(state_size, 128)
+        self.fc2 = nn.Linear(128, 128)
+        self.fc3 = nn.Linear(128, action_size)
     
-    def detect_card(self, card_crop):
-        result = self.client.run_workflow(
-            workspace_name=self.workspace,
-            workflow_id=self.card_detection,
-            images={
-                "image": utils.to_base64(card_crop)
-            },
-            use_cache=True
-        )
-        return result
+    def forward(self, x):
+        x = F.relu(self.fc1(x))
+        x = F.relu(self.fc2(x))
+        return self.fc3(x)  # Q-Werte für jede Aktion
 
-    def get_elixir(self, img_elixir_area):
-        pixels = img_elixir_area.load()
-        w, h = img_elixir_area.size
+# 2. DQN Agent
+class DQNAgent:
+    def __init__(self, state_size, action_size, lr=1e-3):
+        self.state_size = state_size
+        self.action_size = action_size
+        self.memory = deque(maxlen=10000)
+        self.gamma = 0.99
+        self.epsilon = 1.0
+        self.epsilon_min = 0.01
+        self.epsilon_decay = 0.995
+        self.model = QNetwork(state_size, action_size)
+        self.optimizer = torch.optim.Adam(self.model.parameters(), lr=lr)
 
-        filled_columns = 0
+    # 3. Aktionswahl
+    def act(self, state):
+        if random.random() < self.epsilon:
+            return random.randrange(self.action_size)
+        state = torch.tensor(state, dtype=torch.float32)
+        q_values = self.model(state)
+        return torch.argmax(q_values).item()
 
-        for x in range(w):
-            filled_pixels_in_column = 0
+    # 4. Erfahrung speichern
+    def remember(self, state, action, reward, next_state, done):
+        self.memory.append((state, action, reward, next_state, done))
 
-            for y in range(h):
-                r, g, b = pixels[x, y]
-                if ((r > 150 and g < 120 and b > 150) or (r > 200 and g > 200 and b > 200)):
-                    filled_pixels_in_column += 1
-
-            if filled_pixels_in_column > h * 0.1:
-                filled_columns += 1
-
-        return round((filled_columns / w) * 10, 1)
-
-    
-
-class CloudAgent:
-
-    def __init__(self, api_key, workspace, field_detection, card_detection):
-        self.api_key = api_key
-        self.workspace = workspace
-        self.field_detection = field_detection
-        self.card_detection = card_detection
-
-    def detect_field(self, field_crop):
-        url = f"https://serverless.roboflow.com/{self.workspace}/workflows/{self.field_detection}"
-        payload = {
-            "api_key": self.api_key,
-            "inputs": {
-                "image": {"type": "base64", "value": utils.to_base64(field_crop)}
-            }
-        }
-        response = requests.post(url, json=payload)
-        return response.json()
-
-    def detect_card(self, card_crop) -> dict:
-        url = f"https://serverless.roboflow.com/{self.workspace}/workflows/{self.card_detection}"
-        payload = {
-            "api_key": self.api_key,
-            "inputs": {
-                "image": {"type": "base64", "value": utils.to_base64(card_crop)}
-            }
-        }
-        response = requests.post(url, json=payload)
-        return response.json()
+    # 5. Training
+    def replay(self, batch_size=32):
+        if len(self.memory) < batch_size:
+            return
+        batch = random.sample(self.memory, batch_size)
+        for state, action, reward, next_state, done in batch:
+            state = torch.tensor(state, dtype=torch.float32)
+            next_state = torch.tensor(next_state, dtype=torch.float32)
+            target = reward
+            if not done:
+                target += self.gamma * torch.max(self.model(next_state)).item()
+            output = self.model(state)[action]
+            loss = F.mse_loss(output, torch.tensor(target))
+            self.optimizer.zero_grad()
+            loss.backward()
+            self.optimizer.step()
+        
+        # Epsilon decay
+        if self.epsilon > self.epsilon_min:
+            self.epsilon *= self.epsilon_decay

@@ -1,274 +1,273 @@
 {
-"archerqueen":            0,
+    "archerqueen":            1,
 
-"archers":                1,
-"archer":                 1,
+    "archers":                2,
+    "archer":                 2,
 
-"arrows":                 2,
+    "arrows":                 3,
 
-"babydragon":             3,
+    "babydragon":             4,
 
-"balloon":                4,
+    "balloon":                5,
 
-"bandit":                 5,
-"assassin":               5,
+    "bandit":                 6,
+    "assassin":               6,
 
-"barbarianbarrel":        6,
-"barblog":                6,
+    "barbarianbarrel":        7,
+    "barblog":                7,
 
-"barbarianhut":           7,
+    "barbarianhut":           8,
 
-"barbarians":             8,
+    "barbarians":             9,
 
-"bats":                   9,
+    "bats":                   10,
 
-"battlehealer":           10,
+    "battlehealer":           11,
 
-"battleram":              11,
+    "battleram":              12,
 
-"bomber":                 12,
+    "bomber":                 13,
 
-"bombtower":              13,
+    "bombtower":              14,
 
-"bowler":                 14,
+    "bowler":                 15,
 
-"cannon":                 15,
+    "cannon":                 16,
 
-"cannoncart":             16,
-"movingcannon":           16,
+    "cannoncart":             17,
+    "movingcannon":           17,
 
-"clone":                  17,
+    "clone":                  18,
 
-"darkprince":             18,
+    "darkprince":             19,
 
-"dartgoblin":             19,
-"blowdartgoblin":         19,
+    "dartgoblin":             20,
+    "blowdartgoblin":         20,
 
-"earthquake":             20,
+    "earthquake":             21,
 
-"electrodragon":          21,
+    "electrodragon":          22,
 
-"electrogiant":           22,
+    "electrogiant":           23,
 
-"electrospirit":          23,
+    "electrospirit":          24,
 
-"electrowizard":          24,
+    "electrowizard":          25,
 
-"elitebarbarians":        25,
-"angrybarbarians":        25,
+    "elitebarbarians":        26,
+    "angrybarbarians":        26,
 
-"elixircollector":        26,
+    "elixircollector":        27,
 
-"elixirgolem":            27,
+    "elixirgolem":            28,
 
-"executioner":            28,
-"axeman":                 28,
+    "executioner":            29,
+    "axeman":                 29,
 
-"fireball":               29,
+    "fireball":               30,
 
-"firecracker":            30,
+    "firecracker":            31,
 
-"firespirit":             31,
-"firespirits":            31,
+    "firespirit":             32,
+    "firespirits":            32,
 
-"fisherman":              32,
+    "fisherman":              33,
 
-"flyingmachine":          33,
-"dartbarrell":            33,
+    "flyingmachine":          34,
+    "dartbarrell":            34,
 
-"freeze":                 34,
+    "freeze":                 35,
 
-"furnace":                35,
-"firespirithut":          35,
+    "furnace":                36,
+    "firespirithut":          36,
 
-"giant":                  36,
+    "giant":                  37,
 
-"giantskeleton":          37,
+    "giantskeleton":          38,
 
-"giantsnowball":          38,
-"snowball":               38,
+    "giantsnowball":          39,
+    "snowball":               39,
 
-"goblinbarrel":           39,
+    "goblinbarrel":           40,
 
-"goblincage":             40,
+    "goblincage":             41,
 
-"goblindrill":            41,
+    "goblindrill":            42,
 
-"goblingang":             42,
+    "goblingang":             43,
 
-"goblingiant":            43,
+    "goblingiant":            44,
 
-"goblinhut":              44,
+    "goblinhut":              45,
 
-"goblins":                45,
+    "goblins":                46,
 
-"goldenknight":           46,
+    "goldenknight":           47,
 
-"golem":                  47,
+    "golem":                  48,
 
-"graveyard":              48,
+    "graveyard":              49,
 
-"guards":                 49,
-"skeletonwarriors":       49,
+    "guards":                 50,
+    "skeletonwarriors":       50,
 
-"healspirit":             50,
-"heal":                   50,
+    "healspirit":             51,
+    "heal":                   51,
 
-"hogrider":               51,
+    "hogrider":               52,
 
-"hunter":                 52,
+    "hunter":                 53,
 
-"icegolem":               53,
-"icegolemite":            53,
+    "icegolem":               54,
+    "icegolemite":            54,
 
-"icespirit":              54,
-"icespirits":             54,
+    "icespirit":              55,
+    "icespirits":             55,
 
-"icewizard":              55,
+    "icewizard":              56,
 
-"infernodragon":          56,
+    "infernodragon":          57,
 
-"infernotower":           57,
+    "infernotower":           58,
 
-"knight":                 58,
+    "knight":                 59,
 
-"lavahound":              59,
+    "lavahound":              60,
 
-"lightning":              60,
+    "lightning":              61,
 
-"lumberjack":             61,
-"ragebarbarian":          61,
+    "lumberjack":             62,
+    "ragebarbarian":          62,
 
-"magicarcher":            62,
-"elitearcher":            62,
+    "magicarcher":            63,
+    "elitearcher":            63,
 
-"megaknight":             63,
+    "megaknight":             64,
 
-"megaminion":             64,
+    "megaminion":             65,
 
-"mightyminer":            65,
+    "mightyminer":            66,
 
-"miner":                  66,
+    "miner":                  67,
 
-"minionhorde":            67,
+    "minionhorde":            68,
 
-"minions":                68,
+    "minions":                69,
 
-"minipekka":              69,
+    "minipekka":              70,
 
-"mirror":                 70,
+    "mirror":                 71,
 
-"monk":                   71,
+    "monk":                   72,
 
-"mortar":                 72,
+    "mortar":                 73,
 
-"motherwitch":            73,
-"witchmother":            73,
+    "motherwitch":            74,
+    "witchmother":            74,
 
-"musketeer":              74,
+    "musketeer":              75,
 
-"nightwitch":             75,
-"darkwitch":              75,
+    "nightwitch":             76,
+    "darkwitch":              76,
 
-"partyhut":               76,
-"goblinpartyhut":         76,
+    "partyhut":               77,
+    "goblinpartyhut":         77,
 
-"partyrocket":            77,
-"goblinpartyrocket":      77,
+    "partyrocket":            78,
+    "goblinpartyrocket":      78,
 
-"pekka":                  78,
+    "pekka":                  79,
 
-"phoenix":                79,
+    "phoenix":                80,
 
-"poison":                 80,
+    "poison":                 81,
 
-"prince":                 81,
+    "prince":                 82,
 
-"princess":               82,
+    "princess":               83,
 
-"rage":                   83,
+    "rage":                   84,
 
-"ragingprince":           84,
-"princebuff":             84,
+    "ragingprince":           85,
+    "princebuff":             85,
 
-"ramrider":               85,
+    "ramrider":               86,
 
-"rascals":                86,
+    "rascals":                87,
 
-"rocket":                 87,
+    "rocket":                 88,
 
-"royaldelivery":          88,
+    "royaldelivery":          89,
 
-"royalghost":             89,
-"ghost":                  89,
+    "royalghost":             90,
+    "ghost":                  90,
 
-"royalgiant":             90,
+    "royalgiant":             91,
 
-"royalhogs":              91,
+    "royalhogs":              92,
 
-"royalrecruits":          92,
+    "royalrecruits":          93,
 
-"santahogrider":          93,
-"superhogrider":          93,
+    "santahogrider":          94,
+    "superhogrider":          94,
 
-"skeletonarmy":           94,
+    "skeletonarmy":           95,
 
-"skeletonbarrel":         95,
-"skeletonballoon":        95,
+    "skeletonbarrel":         96,
+    "skeletonballoon":        96,
 
-"skeletondragons":        96,
+    "skeletondragons":        97,
 
-"skeletonking":           97,
+    "skeletonking":           98,
 
-"skeletons":              98,
+    "skeletons":              99,
 
-"sparky":                 99,
-"zapmachine":             99,
+    "sparky":                 100,
+    "zapmachine":             100,
 
-"speargoblins":           100,
+    "speargoblins":           101,
 
-"superarchers":           101,
-"superarcher":            101,
+    "superarchers":           102,
+    "superarcher":            102,
 
-"supericegolem":          102,
-"supericegolemite":       102,
+    "supericegolem":          103,
+    "supericegolemite":       103,
 
-"superlavahound":         103,
+    "superlavahound":         104,
 
-"supermagicarcher":       104,
-"superelitearcher":       104,
+    "supermagicarcher":       105,
+    "superelitearcher":       105,
 
-"superminipekka":         105,
+    "superminipekka":         106,
 
-"superwitch":             106,
+    "superwitch":             107,
 
-"terry":                  107,
-"superhogriderterry":     107,
+    "terry":                  108,
+    "superhogriderterry":     108,
 
-"tesla":                  108,
+    "tesla":                  109,
 
-"thelog":                 109,
-"log":                    109,
+    "thelog":                 110,
+    "log":                    110,
 
-"threemusketeers":        110,
+    "threemusketeers":        111,
 
-"tombstone":              111,
+    "tombstone":              112,
 
-"tornado":                112,
+    "tornado":                113,
 
-"valkyrie":               113,
+    "valkyrie":               114,
 
-"wallbreakers":           114,
+    "wallbreakers":           115,
 
-"witch":                  115,
+    "witch":                  116,
 
-"wizard":                 116,
+    "wizard":                 117,
 
-"xbow":                   117,
+    "xbow":                   118,
 
-"zap":                    118,
+    "zap":                    119,
 
-"zappies":                119,
-"minisparkys":            119
-
+    "zappies":                120,
+    "minisparkys":            120
 }

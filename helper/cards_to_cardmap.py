@@ -18,7 +18,7 @@ with open(INPUT_FILE, "r", encoding="utf-8") as f:
 cards.sort(key=lambda c: normalize_key(c["key"]))
 
 card_map = {}
-counter = 0
+counter = 1
 
 # Berechne maximale Key-Länge für Ausrichtung
 max_key_len = 0

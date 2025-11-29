@@ -4,24 +4,7 @@ import time
 
 import config
 import utils
-
-# Relative Positionen in % von der oberen linken Ecke
-HEIGHT_FIELD = 81
-
-X_CARDS = 22.1
-Y_CARDS = 83
-WIDTH_CARD = 18.9
-HEIGHT_CARD = 13
-
-X_ELIXIR = 27
-Y_ELIXIR = 96.65
-WIDTH_ELIXIR = 70.5
-HEIGHT_ELIXIR = 2.55
-
-X_NEXT_CARD = 5.5
-Y_NEXT_CARD = 93.5
-WIDTH_NEXT_CARD = 8.5
-HEIGHT_NEXT_CARD = 5.75
+from constants import *
 
 class ScreenCapturer:
 
@@ -101,27 +84,3 @@ class ScreenCapturer:
         w = utils.get_abs_x(img_coords, WIDTH_ELIXIR)
         h = utils.get_abs_y(img_coords, HEIGHT_ELIXIR)
         return screenshot.crop((x, y, x+w, y+h))
-
-
-class ScreenClicker:
-    
-    def __init__(self, field_coordinates: dict[str, int]):
-        self.field_coordinates = field_coordinates
-        self.card_abs_positions = self.get_cards_positions()
-
-    def place_card(self, card: int, destination_pos):
-        qx, qy = self.card_abs_positions[card]
-        dx, dy = self.get_abs_pos(destination_pos)
-        print(f"Take card {card} @{qx, qy}")
-        pyautogui.leftClick(qx, qy)
-        time.sleep(2)
-        print(f"Place card {card} @{dx, dy}")
-        pyautogui.leftClick(dx, dy)
-
-    def get_cards_positions(self):
-        card_positions = []
-        for i in range(4):
-            x = utils.get_abs_x(self.field_coordinates, X_CARDS + WIDTH_CARD/2 + i * WIDTH_CARD)
-            y = utils.get_abs_y(self.field_coordinates, Y_CARDS + (HEIGHT_CARD/2))
-            card_positions.append((x, y))
-        return card_positions

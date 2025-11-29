@@ -38,6 +38,25 @@ class LocalAgent:
         )
         return result
 
+    def get_elixir(self, img_elixir_area):
+        pixels = img_elixir_area.load()
+        w, h = img_elixir_area.size
+
+        filled_columns = 0
+
+        for x in range(w):
+            filled_pixels_in_column = 0
+
+            for y in range(h):
+                r, g, b = pixels[x, y]
+                if ((r > 150 and g < 120 and b > 150) or (r > 200 and g > 200 and b > 200)):
+                    filled_pixels_in_column += 1
+
+            if filled_pixels_in_column > h * 0.1:
+                filled_columns += 1
+
+        return round((filled_columns / w) * 10, 1)
+
     
 
 class CloudAgent:
@@ -69,24 +88,3 @@ class CloudAgent:
         }
         response = requests.post(url, json=payload)
         return response.json()
-
-
-#Agent Methoden
-def get_elixir(img_elixir_area):
-    pixels = img_elixir_area.load()
-    w, h = img_elixir_area.size
-
-    filled_columns = 0
-
-    for x in range(w):
-        filled_pixels_in_column = 0
-
-        for y in range(h):
-            r, g, b = pixels[x, y]
-            if ((r > 150 and g < 120 and b > 150) or (r > 200 and g > 200 and b > 200)):
-                filled_pixels_in_column += 1
-
-        if filled_pixels_in_column > h * 0.1:
-            filled_columns += 1
-
-    return round((filled_columns / w) * 10, 1)

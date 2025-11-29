@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 import json
 from agent import CloudAgent, LocalAgent
 import agent
-from screen import ScreenCapturer, ScreenClicker
+from screen_capturer import ScreenCapturer, ScreenClicker
 import state
 import utils
 

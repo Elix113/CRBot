@@ -1,0 +1,274 @@
+{
+"archerqueen":            0,
+
+"archers":                1,
+"archer":                 1,
+
+"arrows":                 2,
+
+"babydragon":             3,
+
+"balloon":                4,
+
+"bandit":                 5,
+"assassin":               5,
+
+"barbarianbarrel":        6,
+"barblog":                6,
+
+"barbarianhut":           7,
+
+"barbarians":             8,
+
+"bats":                   9,
+
+"battlehealer":           10,
+
+"battleram":              11,
+
+"bomber":                 12,
+
+"bombtower":              13,
+
+"bowler":                 14,
+
+"cannon":                 15,
+
+"cannoncart":             16,
+"movingcannon":           16,
+
+"clone":                  17,
+
+"darkprince":             18,
+
+"dartgoblin":             19,
+"blowdartgoblin":         19,
+
+"earthquake":             20,
+
+"electrodragon":          21,
+
+"electrogiant":           22,
+
+"electrospirit":          23,
+
+"electrowizard":          24,
+
+"elitebarbarians":        25,
+"angrybarbarians":        25,
+
+"elixircollector":        26,
+
+"elixirgolem":            27,
+
+"executioner":            28,
+"axeman":                 28,
+
+"fireball":               29,
+
+"firecracker":            30,
+
+"firespirit":             31,
+"firespirits":            31,
+
+"fisherman":              32,
+
+"flyingmachine":          33,
+"dartbarrell":            33,
+
+"freeze":                 34,
+
+"furnace":                35,
+"firespirithut":          35,
+
+"giant":                  36,
+
+"giantskeleton":          37,
+
+"giantsnowball":          38,
+"snowball":               38,
+
+"goblinbarrel":           39,
+
+"goblincage":             40,
+
+"goblindrill":            41,
+
+"goblingang":             42,
+
+"goblingiant":            43,
+
+"goblinhut":              44,
+
+"goblins":                45,
+
+"goldenknight":           46,
+
+"golem":                  47,
+
+"graveyard":              48,
+
+"guards":                 49,
+"skeletonwarriors":       49,
+
+"healspirit":             50,
+"heal":                   50,
+
+"hogrider":               51,
+
+"hunter":                 52,
+
+"icegolem":               53,
+"icegolemite":            53,
+
+"icespirit":              54,
+"icespirits":             54,
+
+"icewizard":              55,
+
+"infernodragon":          56,
+
+"infernotower":           57,
+
+"knight":                 58,
+
+"lavahound":              59,
+
+"lightning":              60,
+
+"lumberjack":             61,
+"ragebarbarian":          61,
+
+"magicarcher":            62,
+"elitearcher":            62,
+
+"megaknight":             63,
+
+"megaminion":             64,
+
+"mightyminer":            65,
+
+"miner":                  66,
+
+"minionhorde":            67,
+
+"minions":                68,
+
+"minipekka":              69,
+
+"mirror":                 70,
+
+"monk":                   71,
+
+"mortar":                 72,
+
+"motherwitch":            73,
+"witchmother":            73,
+
+"musketeer":              74,
+
+"nightwitch":             75,
+"darkwitch":              75,
+
+"partyhut":               76,
+"goblinpartyhut":         76,
+
+"partyrocket":            77,
+"goblinpartyrocket":      77,
+
+"pekka":                  78,
+
+"phoenix":                79,
+
+"poison":                 80,
+
+"prince":                 81,
+
+"princess":               82,
+
+"rage":                   83,
+
+"ragingprince":           84,
+"princebuff":             84,
+
+"ramrider":               85,
+
+"rascals":                86,
+
+"rocket":                 87,
+
+"royaldelivery":          88,
+
+"royalghost":             89,
+"ghost":                  89,
+
+"royalgiant":             90,
+
+"royalhogs":              91,
+
+"royalrecruits":          92,
+
+"santahogrider":          93,
+"superhogrider":          93,
+
+"skeletonarmy":           94,
+
+"skeletonbarrel":         95,
+"skeletonballoon":        95,
+
+"skeletondragons":        96,
+
+"skeletonking":           97,
+
+"skeletons":              98,
+
+"sparky":                 99,
+"zapmachine":             99,
+
+"speargoblins":           100,
+
+"superarchers":           101,
+"superarcher":            101,
+
+"supericegolem":          102,
+"supericegolemite":       102,
+
+"superlavahound":         103,
+
+"supermagicarcher":       104,
+"superelitearcher":       104,
+
+"superminipekka":         105,
+
+"superwitch":             106,
+
+"terry":                  107,
+"superhogriderterry":     107,
+
+"tesla":                  108,
+
+"thelog":                 109,
+"log":                    109,
+
+"threemusketeers":        110,
+
+"tombstone":              111,
+
+"tornado":                112,
+
+"valkyrie":               113,
+
+"wallbreakers":           114,
+
+"witch":                  115,
+
+"wizard":                 116,
+
+"xbow":                   117,
+
+"zap":                    118,
+
+"zappies":                119,
+"minisparkys":            119
+
+}

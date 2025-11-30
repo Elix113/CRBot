@@ -25,8 +25,6 @@ class Actioner:
         col = pos % ACTION_FIELD_MTRX_W
         x = X_FIELD + (col / (ACTION_FIELD_MTRX_W - 1)) * WIDTH_FIELD
         y = Y_FIELD + (row / (ACTION_FIELD_MTRX_H - 1)) * HEIGHT_FIELD
-        x = col / (ACTION_FIELD_MTRX_W - 1) * 100
-        y = row / (ACTION_FIELD_MTRX_H - 1) * 100
         return (x, y)
 
     def place_card(self, card, dest_rel_pos):

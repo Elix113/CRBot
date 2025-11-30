@@ -1,12 +1,9 @@
 from concurrent.futures import ThreadPoolExecutor
-from io import BytesIO
 from inference_sdk import InferenceHTTPClient
 import requests
-import base64
 
 from constants import *
 import utils
-
 
 class Predictor:
 
@@ -16,7 +13,7 @@ class Predictor:
         self.detect_card = cv_class.detect_card
         self.detect_field = cv_class.detect_field
 
-    def get_predictions(self, screen_crops, cards):
+    def get_predictions_async(self, screen_crops, cards):
         elixir_crop = screen_crops[KEY_ELIXIR]
         cards_crop = screen_crops[KEY_CARDS]
         next_card_crop = screen_crops[KEY_NEXT_CARD]
@@ -26,7 +23,7 @@ class Predictor:
             # Tasks starten
             future_elixir = executor.submit(self.get_elixir, elixir_crop)
             if (cards):
-                futures_cards = [executor.submit(self.detect_card, c) for c in cards_crop]
+                futures_cards = [executor.submit(self.detect_card, card) for card in cards_crop]
             future_next_card = executor.submit(self.detect_card, next_card_crop)
             future_field = executor.submit(self.detect_field, field_crop)
 
@@ -46,6 +43,23 @@ class Predictor:
             KEY_FIELD: field_prediction
         }
 
+    def get_predictions(self, screen_crops, cards):
+        elixir_crop = screen_crops[KEY_ELIXIR]
+        cards_crop = screen_crops[KEY_CARDS]
+        next_card_crop = screen_crops[KEY_NEXT_CARD]
+        field_crop = screen_crops[KEY_FIELD]
+
+        elixir_prediction = self.get_elixir(elixir_crop)
+        cards_prediction = [self.detect_card(card) for card in cards_crop]
+        next_card_prediction = self.detect_card(next_card_crop)
+        field_prediction = self.detect_field(field_crop)
+
+        return {
+            KEY_ELIXIR: elixir_prediction,
+            KEY_CARDS: cards_prediction,
+            KEY_NEXT_CARD: next_card_prediction,
+            KEY_FIELD: field_prediction
+        }
 
 class LocalFlow:
 

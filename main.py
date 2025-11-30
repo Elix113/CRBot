@@ -1,8 +1,5 @@
-import os
 from dotenv import load_dotenv
-import json
 
-import torch
 from agent import DQNAgent
 from constants import *
 from predictor import Predictor, LocalFlow
@@ -15,7 +12,7 @@ def main():
     screen_crops = capturer.get_all_crops()
 
     predictor = Predictor(LocalFlow())
-    predictions = predictor.get_predictions(screen_crops, True)
+    predictions = predictor.get_predictions_async(screen_crops, True)
 
     state = State(
         predictions[KEY_ELIXIR], 

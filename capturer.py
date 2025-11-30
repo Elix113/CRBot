@@ -36,7 +36,7 @@ class Capturer:
     def get_all_crops(self):
         screenshot = self.take_screenshot()
         return {
-            "full": screenshot,
+            "screenshot": screenshot,
             "elixir": self.get_elixir_crop(screenshot),
             "cards": self.get_cards_crop(screenshot),
             "next_card": self.get_next_card_crop(screenshot),

@@ -8,8 +8,8 @@ from constants import *
 
 class Capturer:
 
-    def __init__(self, field_coordinates):
-        self.field_coordinates = field_coordinates
+    def __init__(self, game_coordinates):
+        self.game_coordinates = game_coordinates
 
     @staticmethod
     def load_field():
@@ -33,10 +33,8 @@ class Capturer:
         print("Field position: ", coords)
         return coords
 
-    def get_all_crops(self):
-        screenshot = self.take_screenshot()
+    def get_all_crops(self, screenshot):
         return {
-            "screenshot": screenshot,
             "elixir": self.get_elixir_crop(screenshot),
             "cards": self.get_cards_crop(screenshot),
             "next_card": self.get_next_card_crop(screenshot),
@@ -44,7 +42,7 @@ class Capturer:
         }
 
     def take_screenshot(self):
-        (x1, y1), (x2, y2) = self.field_coordinates
+        (x1, y1), (x2, y2) = self.game_coordinates
         width = x2 - x1
         height = y2 - y1
         screenshot = pyautogui.screenshot(region=(x1, y1, width, height))

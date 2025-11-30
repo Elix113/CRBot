@@ -1,3 +1,5 @@
+import os
+import pickle
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -29,7 +31,12 @@ class DQNAgent:
         self.epsilon_min = 0.01
         self.epsilon_decay = 0.995
         self.model = QNetwork(state_size, action_size)
+
+        self.target_model = QNetwork(state_size, action_size)
+        self.target_model.load_state_dict(self.model.state_dict())
+        self.update_rate = 1000
         self.optimizer = torch.optim.Adam(self.model.parameters(), lr=lr)
+        self.step_count = 0
 
     # 3. Aktionswahl
     def act(self, state):
@@ -47,19 +54,87 @@ class DQNAgent:
     def replay(self, batch_size=32):
         if len(self.memory) < batch_size:
             return
+
         batch = random.sample(self.memory, batch_size)
-        for state, action, reward, next_state, done in batch:
-            state = torch.tensor(state, dtype=torch.float32)
-            next_state = torch.tensor(next_state, dtype=torch.float32)
-            target = reward
-            if not done:
-                target += self.gamma * torch.max(self.model(next_state)).item()
-            output = self.model(state)[action]
-            loss = F.mse_loss(output, torch.tensor(target))
-            self.optimizer.zero_grad()
-            loss.backward()
-            self.optimizer.step()
-        
+
+        # States und Next States in Batch Tensor
+        states = torch.tensor([s for s, a, r, ns, d in batch], dtype=torch.float32)
+        next_states = torch.tensor([ns for s, a, r, ns, d in batch], dtype=torch.float32)
+        actions = torch.tensor([a for s, a, r, ns, d in batch])
+        rewards = torch.tensor([r for s, a, r, ns, d in batch], dtype=torch.float32)
+        dones = torch.tensor([d for s, a, r, ns, d in batch], dtype=torch.bool)
+
+        # Q-Values des aktuellen Netzwerks
+        q_values = self.model(states)
+        # Q-Values des Target Netzwerks für next_state
+        next_q_values = self.target_model(next_states)
+
+        # Double DQN: best_action via model, target via target_model
+        next_actions = torch.argmax(self.model(next_states), dim=1)
+        target = rewards + self.gamma * next_q_values[range(batch_size), next_actions] * (~dones)
+
+        # Berechne Loss
+        loss = F.mse_loss(q_values[range(batch_size), actions], target)
+
+        # Update
+        self.optimizer.zero_grad()
+        loss.backward()
+        self.optimizer.step()
+
         # Epsilon decay
         if self.epsilon > self.epsilon_min:
             self.epsilon *= self.epsilon_decay
+
+        # Target Network aktualisieren
+        self.step_count += 1
+        if self.step_count % self.update_rate == 0:
+            self.target_model.load_state_dict(self.model.state_dict())
+
+    def save(self, folder="save"):
+        os.makedirs(folder, exist_ok=True)
+
+        # 1. Modell speichern
+        model_path = os.path.join(folder, "model.pth")
+        torch.save(self.model.state_dict(), model_path)
+
+        # 2. Replay Memory speichern
+        memory_path = os.path.join(folder, "memory.pkl")
+        with open(memory_path, "wb") as f:
+            pickle.dump(self.memory, f)
+
+        # 3. Epsilon speichern
+        epsilon_path = os.path.join(folder, "epsilon.pkl")
+        with open(epsilon_path, "wb") as f:
+            pickle.dump(self.epsilon, f)
+
+        print("[✔] Agent erfolgreich gespeichert.")
+
+
+    def load(self, folder="save"):
+        model_path = os.path.join(folder, "model.pth")
+        memory_path = os.path.join(folder, "memory.pkl")
+        epsilon_path = os.path.join(folder, "epsilon.pkl")
+
+        loaded_anything = False
+
+        # 1. Modell laden
+        if os.path.exists(model_path):
+            self.model.load_state_dict(torch.load(model_path))
+            loaded_anything = True
+
+        # 2. Replay Memory laden
+        if os.path.exists(memory_path):
+            with open(memory_path, "rb") as f:
+                self.memory = pickle.load(f)
+            loaded_anything = True
+
+        # 3. Epsilon laden
+        if os.path.exists(epsilon_path):
+            with open(epsilon_path, "rb") as f:
+                self.epsilon = pickle.load(f)
+            loaded_anything = True
+
+        if loaded_anything:
+            print("[✔] Agent erfolgreich geladen.")
+        else:
+            print("[ℹ] Keine gespeicherten Daten gefunden – frischer Start.")

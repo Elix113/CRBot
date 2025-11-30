@@ -78,8 +78,8 @@ class State:
         return round(card_id / 1000, 3)
 
     def get_matrix_coords(self, x, y):
-        matrix_x = int(x / self.field_w * STATE_FIELD_MTRX_W-1)
-        matrix_y = int(y / self.field_h * STATE_FIELD_MTRX_H-1)
+        matrix_x = int(y / self.field_h * (STATE_FIELD_MTRX_H-1))
+        matrix_y = int(x / self.field_w * (STATE_FIELD_MTRX_W-1))
         return (matrix_x, matrix_y)
 
     def to_vector(self, old_vector):
@@ -98,6 +98,33 @@ class State:
                     vector[i] = old_vector[i]
 
         return vector
+
+    def calculate_reward(self, old_state_vector, state_vector):
+        elixir_start = 0
+        cards_start = elixir_start + ELIXIR_VECTOR
+        next_card_start = cards_start + CARDS_VECTOR
+        ally_tower_start = next_card_start + NEXT_CARD_VECTOR
+        enemy_tower_start = ally_tower_start + ALLY_TOWER_VECTOR
+        field_start = enemy_tower_start + ENEMY_TOWER_VECTOR
+        field_end = field_start + STATE_FIELD_MTRX_H * STATE_FIELD_MTRX_W
+
+        reward = 0
+
+        #Eigener Turm verloren
+        own_tower_loss = sum(old_state_vector[ally_tower_start:enemy_tower_start]) - sum(state_vector[ally_tower_start:enemy_tower_start])
+        reward -= own_tower_loss * 0.5
+
+        #Gegnerische Türme
+        enemy_tower_loss = sum(old_state_vector[enemy_tower_start:field_start]) - sum(state_vector[enemy_tower_start:field_start])
+        reward += enemy_tower_loss * 1.0
+
+        #Summe der Ally-Truppen (+) vs Gegner-Truppen (-)
+        old_field_sum = sum(old_state_vector[field_start:field_end])
+        new_field_sum = sum(state_vector[field_start:field_end])
+        delta_field = new_field_sum - old_field_sum
+        reward += delta_field * 0.01
+
+        return max(min(reward, 1.0), -1.0)
 
     def to_string(self):
         print("Elixir:      ", self.elixir)

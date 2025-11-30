@@ -4,18 +4,18 @@ import io
 
 from PIL import Image
 
-def get_abs_pos(pos_prct):
+def get_abs_pos(game_coordinates, pos_prct):
     x_prct, y_prct = pos_prct
-    x = get_abs_x(x_prct)
-    y = get_abs_y(y_prct)
+    x = get_abs_x(game_coordinates, x_prct)
+    y = get_abs_y(game_coordinates, y_prct)
     return (x, y)
 
-def get_abs_x(field_coordinates, x_prct):
-    (x1, y1), (x2, y2) = field_coordinates
+def get_abs_x(game_coordinates, x_prct):
+    (x1, y1), (x2, y2) = game_coordinates
     return round(x1 + (((x2 - x1) / 100) * x_prct))
 
-def get_abs_y(field_coordinates, y_prct):
-    (x1, y1), (x2, y2) = field_coordinates
+def get_abs_y(game_coordinates, y_prct):
+    (x1, y1), (x2, y2) = game_coordinates
     return round(y1 + (((y2 - y1) / 100) * y_prct))
 
 # def get_abs_x_distance(field_coordinates, x_prct):

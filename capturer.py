@@ -6,16 +6,16 @@ import config
 import utils
 from constants import *
 
-class ScreenCapturer:
+class Capturer:
 
     def __init__(self):
-        self.field_coordinates = ScreenCapturer.load_field()
+        self.field_coordinates = Capturer.load_field()
 
     @staticmethod
     def load_field():
         c = config.Config()
         if not c.has(config.KEY_FIELD_COORDINATES):
-            coords = ScreenCapturer.select_field()
+            coords = Capturer.select_field()
             c.set(config.KEY_FIELD_COORDINATES, coords)
         return c.get(config.KEY_FIELD_COORDINATES)
     

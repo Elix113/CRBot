@@ -5,7 +5,7 @@ import json
 import torch
 from agent import DQNAgent
 from predictor import LocalFlow
-from screen_capturer import ScreenCapturer
+from capturer import Capturer
 from state import State
 
 # Variablen aus .env lesen
@@ -16,7 +16,8 @@ WORKFLOW_FIELD_DETECTION = os.getenv("WORKFLOW_FIELD_DETECTION")
 WORKFLOW_CARD_DETECTION = os.getenv("WORKFLOW_CARD_DETECTION")
 
 def main():
-    screen_capturer = ScreenCapturer()
+
+    screen_capturer = Capturer()
     roboflow = LocalFlow(ROBOFLOW_API_KEY, WORKSPACE, WORKFLOW_FIELD_DETECTION, WORKFLOW_CARD_DETECTION)
     old_vector = None
 

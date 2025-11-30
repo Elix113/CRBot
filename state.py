@@ -93,6 +93,7 @@ class State:
             *self.enemy_towers,
             *self.field.flatten().tolist()
         ]
+        
         if (old_vector != None):
             for i in range(1, ELIXIR_VECTOR + CARDS_VECTOR + NEXT_CARD_VECTOR + ALLY_TOWER_VECTOR + ENEMY_TOWER_VECTOR):
                 if (vector[i] < 1e-6):

@@ -16,7 +16,7 @@ class State:
         self.next_card: float = 0.0
         self.ally_towers: List[float] = [0.0, 0.0, 0.0]
         self.enemy_towers: List[float] = [0.0, 0.0, 0.0]
-        self.field = np.zeros((FIELD_MTRX_H, FIELD_MTRX_W))
+        self.field = np.zeros((STATE_FIELD_MTRX_H, STATE_FIELD_MTRX_W))
         self.field_w, self.field_h = field_size
 
         self.set_elixir(elixir_prediction)
@@ -78,8 +78,8 @@ class State:
         return round(card_id / 1000, 3)
 
     def get_matrix_coords(self, x, y):
-        matrix_x = int(x / self.field_w * FIELD_MTRX_W-1)
-        matrix_y = int(y / self.field_h * FIELD_MTRX_H-1)
+        matrix_x = int(x / self.field_w * STATE_FIELD_MTRX_W-1)
+        matrix_y = int(y / self.field_h * STATE_FIELD_MTRX_H-1)
         return (matrix_x, matrix_y)
 
     def to_vector(self, old_vector):

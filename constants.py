@@ -1,4 +1,8 @@
 # Relative Positionen in % von der oberen linken Ecke
+import os
+from dotenv import load_dotenv
+
+
 X_FIELD = 6
 Y_FIELD = 7.2
 WIDTH_FIELD = 88
@@ -29,3 +33,17 @@ NEXT_CARD_VECTOR = 1
 ALLY_TOWER_VECTOR = 3
 ENEMY_TOWER_VECTOR = 3
 VECTOR_LENGTH = ELIXIR_VECTOR + CARDS_VECTOR + NEXT_CARD_VECTOR + ALLY_TOWER_VECTOR + ENEMY_TOWER_VECTOR + FIELD_MTRX_H * FIELD_MTRX_W
+
+#Keys für Eigenschaften
+KEY_ELIXIR = "elixir"
+KEY_CARDS = "cards"
+KEY_NEXT_CARD = "next_card"
+KEY_FIELD = "field"
+
+
+#.env Variablen
+load_dotenv()
+ROBOFLOW_API_KEY = os.getenv("ROBOFLOW_API_KEY")
+WORKSPACE_NAME = os.getenv("WORKSPACE")
+WORKFLOW_FIELD_DETECTION = os.getenv("WORKFLOW_FIELD_DETECTION")
+WORKFLOW_CARD_DETECTION = os.getenv("WORKFLOW_CARD_DETECTION")

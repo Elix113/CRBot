@@ -8,8 +8,8 @@ from constants import *
 
 class Capturer:
 
-    def __init__(self):
-        self.field_coordinates = Capturer.load_field()
+    def __init__(self, field_coordinates):
+        self.field_coordinates = field_coordinates
 
     @staticmethod
     def load_field():
@@ -32,6 +32,16 @@ class Capturer:
         coords = ((x1,y1), (x2,y2))
         print("Field position: ", coords)
         return coords
+
+    def get_all_crops(self):
+        screenshot = self.take_screenshot()
+        return {
+            "full": screenshot,
+            "elixir": self.get_elixir_crop(screenshot),
+            "cards": self.get_cards_crop(screenshot),
+            "next_card": self.get_next_card_crop(screenshot),
+            "field": self.get_field_crop(screenshot)
+        }
 
     def take_screenshot(self):
         (x1, y1), (x2, y2) = self.field_coordinates

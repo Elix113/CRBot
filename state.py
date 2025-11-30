@@ -10,14 +10,14 @@ with open("card_map.json", "r", encoding="utf-8") as f:
 
 class State:
 
-    def __init__(self, elixir_prediction, cards_prediction, nextcard_prediction, field_prediction, field_coords):
+    def __init__(self, elixir_prediction, cards_prediction, nextcard_prediction, field_prediction, field_size):
         self.elixir: float = 0.0
         self.cards: List[float] = [0.0, 0.0, 0.0, 0.0]
         self.next_card: float = 0.0
         self.ally_towers: List[float] = [0.0, 0.0, 0.0]
         self.enemy_towers: List[float] = [0.0, 0.0, 0.0]
         self.field = np.zeros((FIELD_MTRX_H, FIELD_MTRX_W))
-        self.field_w, self.field_h = field_coords
+        self.field_w, self.field_h = field_size
 
         self.set_elixir(elixir_prediction)
         self.set_cards(cards_prediction)
@@ -37,8 +37,6 @@ class State:
         if (data[0]["predictions"]["predictions"]):
             card_class = data[0]["predictions"]["predictions"][0]["class"]
             self.next_card = self.card_to_id(card_class)
-        else:
-            self.next_card = -1
 
     def set_field(self, data):
         predictions = data[0]["predictions"]["predictions"]
@@ -93,7 +91,7 @@ class State:
             *self.enemy_towers,
             *self.field.flatten().tolist()
         ]
-        
+
         if (old_vector != None):
             for i in range(1, ELIXIR_VECTOR + CARDS_VECTOR + NEXT_CARD_VECTOR + ALLY_TOWER_VECTOR + ENEMY_TOWER_VECTOR):
                 if (vector[i] < 1e-6):

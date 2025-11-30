@@ -44,17 +44,21 @@ def main():
 
         actioner.act(action)
 
-
         old_state_vector = state_vector
         first_round = False
-        done = stop()
+        done = stop(state_vector)
 
     agent.save()
 
 def start():
     input("Start? Mit Enter bestätigen...")
 
-def stop():
-    return keyboard.is_pressed("x")
+def stop(state_vector):
+    stop = (
+        sum(state_vector[ALLY_TOWER_START:ENEMY_TOWER_START]) == 0 
+        or sum(state_vector[ENEMY_TOWER_START:FIELD_START]) == 0
+        or keyboard.is_pressed("x")
+    )
+    return stop
 
 main()

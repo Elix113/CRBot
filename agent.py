@@ -25,7 +25,7 @@ class DQNAgent:
     def __init__(self, state_size, action_size, lr=1e-3):
         self.state_size = state_size
         self.action_size = action_size
-        self.memory = deque(maxlen=10000)
+        self.memory = deque(maxlen=50000)
         self.gamma = 0.99
         self.epsilon = 1.0
         self.epsilon_min = 0.01
@@ -51,7 +51,7 @@ class DQNAgent:
         self.memory.append((state, action, reward, next_state, done))
 
     # 5. Training
-    def replay(self, batch_size=32):
+    def replay(self, batch_size=64):
         if len(self.memory) < batch_size:
             return
 

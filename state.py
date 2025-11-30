@@ -17,7 +17,7 @@ class State:
         self.ally_towers: List[float] = [0.0, 0.0, 0.0]
         self.enemy_towers: List[float] = [0.0, 0.0, 0.0]
         self.field = np.zeros((STATE_FIELD_MTRX_H, STATE_FIELD_MTRX_W))
-        self.field_w, self.field_h = field_size
+        self.field_width, self.field_height = field_size
 
         self.set_elixir(elixir_prediction)
         self.set_cards(cards_prediction)
@@ -47,15 +47,15 @@ class State:
             unit_class = unit["class"] 
 
             if (unit_class == "ally king tower"):
-                self.ally_towers[1] = 1
+                self.ally_towers[1] = 1.0
             elif (unit_class == "ally princess tower"):
-                self.ally_towers[0 if not ally_princess else 2] = 1
+                self.ally_towers[0 if not ally_princess else 2] = 1.0
                 ally_princess = True
 
             elif (unit_class == "enemy king tower"):
-                self.enemy_towers[1] = 1
+                self.enemy_towers[1] = 1.0
             elif (unit_class == "enemy princess tower"):
-                self.enemy_towers[0 if not enemy_princess else 2] = 1
+                self.enemy_towers[0 if not enemy_princess else 2] = 1.0
                 enemy_princess = True
 
             elif (unit_class == "ally troop"):
@@ -78,8 +78,8 @@ class State:
         return round(card_id / 1000, 3)
 
     def get_matrix_coords(self, x, y):
-        matrix_x = int(y / self.field_h * (STATE_FIELD_MTRX_H-1))
-        matrix_y = int(x / self.field_w * (STATE_FIELD_MTRX_W-1))
+        matrix_x = int(y / self.field_height * (STATE_FIELD_MTRX_H-1))
+        matrix_y = int(x / self.field_width * (STATE_FIELD_MTRX_W-1))
         return (matrix_x, matrix_y)
 
     def to_vector(self, old_vector):
@@ -100,27 +100,22 @@ class State:
         return vector
 
     def calculate_reward(self, old_state_vector, state_vector):
-        elixir_start = 0
-        cards_start = elixir_start + ELIXIR_VECTOR
-        next_card_start = cards_start + CARDS_VECTOR
-        ally_tower_start = next_card_start + NEXT_CARD_VECTOR
-        enemy_tower_start = ally_tower_start + ALLY_TOWER_VECTOR
-        field_start = enemy_tower_start + ENEMY_TOWER_VECTOR
-        field_end = field_start + STATE_FIELD_MTRX_H * STATE_FIELD_MTRX_W
-
         reward = 0
-
         #Eigener Turm verloren
-        own_tower_loss = sum(old_state_vector[ally_tower_start:enemy_tower_start]) - sum(state_vector[ally_tower_start:enemy_tower_start])
-        reward -= own_tower_loss * 0.5
+        old_ally_tower_loss = sum(old_state_vector[ALLY_TOWER_START:ENEMY_TOWER_START]) 
+        new_ally_tower_loss = sum(state_vector[ALLY_TOWER_START:ENEMY_TOWER_START])#
+        delta_ally_tower_loss = old_ally_tower_loss - new_ally_tower_loss
+        reward -= delta_ally_tower_loss * 0.5
 
         #Gegnerische Türme
-        enemy_tower_loss = sum(old_state_vector[enemy_tower_start:field_start]) - sum(state_vector[enemy_tower_start:field_start])
-        reward += enemy_tower_loss * 1.0
+        old_enemy_tower_loss = sum(old_state_vector[ENEMY_TOWER_START:FIELD_START])
+        new_enemy_tower_loss = sum(state_vector[ENEMY_TOWER_START:FIELD_START])
+        delta_enemy_tower_loss = old_enemy_tower_loss - new_enemy_tower_loss
+        reward += delta_enemy_tower_loss * 1.0
 
         #Summe der Ally-Truppen (+) vs Gegner-Truppen (-)
-        old_field_sum = sum(old_state_vector[field_start:field_end])
-        new_field_sum = sum(state_vector[field_start:field_end])
+        old_field_sum = sum(old_state_vector[FIELD_START:FIELD_END])
+        new_field_sum = sum(state_vector[FIELD_START:FIELD_END])
         delta_field = new_field_sum - old_field_sum
         reward += delta_field * 0.01
 
@@ -132,7 +127,4 @@ class State:
         print("Next Card:   ", self.next_card)
         print("Ally Towers: ", self.ally_towers)
         print("Enemy Towers:", self.enemy_towers)
-        print("Enemy Towers:", self.enemy_towers)
-        print("Field:")
-        for row in self.field:
-            print("             ", row)
+        print("Field:       ", *self.field.flatten().tolist())

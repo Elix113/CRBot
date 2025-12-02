@@ -1,31 +1,48 @@
-# Relative Positionen in % von der oberen linken Ecke
 import os
 from dotenv import load_dotenv
+
+# Relative Positionen in % von der oberen linken Ecke
+X_ELIXIR = 26.5
+Y_ELIXIR = 98
+WIDTH_ELIXIR = 69.6
+# HEIGHT_ELIXIR = 2.2
+
+X_CARDS = 21.9
+Y_CARDS = 81.5
+WIDTH_CARD = 18.7
+HEIGHT_CARD = 14
+
+X_NEXT_CARD = 5.2
+Y_NEXT_CARD = 93.2
+WIDTH_NEXT_CARD = 8.5
+HEIGHT_NEXT_CARD = 5.75
 
 X_FIELD = 6
 Y_FIELD = 7.2
 WIDTH_FIELD = 88
 HEIGHT_FIELD = 70
 
-X_CARDS = 22.1
-Y_CARDS = 83
-WIDTH_CARD = 18.9
-HEIGHT_CARD = 13
+X_KING = 44.5
+Y_ALLY_KING = 75.5
+Y_ENEMY_KING = 3
+WIDTH_KING= 15
+# HEIGHT_KING = 1
 
-X_ELIXIR = 27
-Y_ELIXIR = 96.65
-WIDTH_ELIXIR = 70.5
-HEIGHT_ELIXIR = 2.55
-
-X_NEXT_CARD = 5.5
-Y_NEXT_CARD = 93.5
-WIDTH_NEXT_CARD = 8.5
-HEIGHT_NEXT_CARD = 5.75
+X_LEFT_PRINCESS = 20.05
+X_RIGHT_PRINCESS = 72.45
+Y_ALLY_PRINCESS = 62.15
+Y_ENEMY_PRINCESS = 15.2
+WIDTH_PRINCESS = 10.95
+# HEIGHT_PRINCESS = 0.8
 
 #Keys für Eigenschaften
 KEY_ELIXIR = "elixir"
 KEY_CARDS = "cards"
 KEY_NEXT_CARD = "next_card"
+KEY_ALLY_KING = "ally_king"
+KEY_ALLY_PRINCESSES = "ally_princesses"
+KEY_ENEMY_KING = "enemy_king"
+KEY_ENEMY_PRINCESSES = "enemy_princesses"
 KEY_FIELD = "field"
 
 

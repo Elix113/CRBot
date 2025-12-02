@@ -9,32 +9,42 @@ class Predictor:
 
     def __init__(self, cv_class):
         
-        self.get_elixir = detect_elixir
+        self.detect_elixir = detect_elixir
         self.detect_card = cv_class.detect_card
         self.detect_field = cv_class.detect_field
+        self.detect_ally_tower = detect_ally_tower
+        self.detect_enemy_tower = detect_enemy_tower
 
-    def get_predictions_async(self, screen_crops, cards):
+    def get_predictions_async(self, screen_crops):
         elixir_crop = screen_crops[KEY_ELIXIR]
         cards_crop = screen_crops[KEY_CARDS]
         next_card_crop = screen_crops[KEY_NEXT_CARD]
         field_crop = screen_crops[KEY_FIELD]
+        ally_king_crop = screen_crops[KEY_ALLY_KING]
+        ally_princesses_crop = screen_crops[KEY_ALLY_PRINCESSES]
+        enemy_king_crop = screen_crops[KEY_ENEMY_KING]
+        enemy_princesses_crop = screen_crops[KEY_ENEMY_PRINCESSES]
 
         with ThreadPoolExecutor() as executor:
             # Tasks starten
-            future_elixir = executor.submit(self.get_elixir, elixir_crop)
-            if (cards):
-                futures_cards = [executor.submit(self.detect_card, card) for card in cards_crop]
+            future_elixir = executor.submit(self.detect_elixir, elixir_crop)
+            futures_cards = [executor.submit(self.detect_card, card) for card in cards_crop]
             future_next_card = executor.submit(self.detect_card, next_card_crop)
             future_field = executor.submit(self.detect_field, field_crop)
+            future_ally_king = executor.submit(self.detect_ally_tower, ally_king_crop)
+            future_ally_princesses = [executor.submit(self.detect_ally_tower, ally_princess) for ally_princess in ally_princesses_crop]
+            future_enemy_king = executor.submit(self.detect_enemy_tower, enemy_king_crop)
+            future_enemy_princesses = [executor.submit(self.detect_enemy_tower, enemy_princess) for enemy_princess in enemy_princesses_crop]
 
             # Ergebnisse einsammeln
             elixir_prediction = future_elixir.result()
-            if (cards):
-                cards_prediction = [f.result() for f in futures_cards]
-            else: 
-                cards_prediction = []
+            cards_prediction = [f.result() for f in futures_cards]
             next_card_prediction = future_next_card.result()
             field_prediction = future_field.result()
+            ally_king_prediction = future_ally_king.result()
+            ally_princesses_prediction = [f.result() for f in future_ally_princesses]
+            enemy_king_prediction = future_enemy_king.result()
+            enemy_princesses_prediction = [f.result() for f in future_enemy_princesses]
 
         return {
             KEY_ELIXIR: elixir_prediction,
@@ -43,16 +53,24 @@ class Predictor:
             KEY_FIELD: field_prediction
         }
 
-    def get_predictions(self, screen_crops, cards):
+    def get_predictions(self, screen_crops):
         elixir_crop = screen_crops[KEY_ELIXIR]
         cards_crop = screen_crops[KEY_CARDS]
         next_card_crop = screen_crops[KEY_NEXT_CARD]
         field_crop = screen_crops[KEY_FIELD]
+        ally_king_crop = screen_crops[KEY_ALLY_KING]
+        ally_princesses_crop = screen_crops[KEY_ALLY_PRINCESSES]
+        enemy_king_crop = screen_crops[KEY_ENEMY_KING]
+        enemy_princesses_crop = screen_crops[KEY_ENEMY_PRINCESSES]
 
-        elixir_prediction = self.get_elixir(elixir_crop)
+        elixir_prediction = self.detect_elixir(elixir_crop)
         cards_prediction = [self.detect_card(card) for card in cards_crop]
         next_card_prediction = self.detect_card(next_card_crop)
         field_prediction = self.detect_field(field_crop)
+        ally_king_prediction = self.detect_ally_tower(ally_king_crop)
+        ally_princesses_prediction = [self.detect_ally_tower(tower) for tower in ally_princesses_crop]
+        enemy_king_prediction = self.detect_enemy_tower(enemy_king_crop)
+        enemy_princesses_prediction = [self.detect_enemy_tower(tower) for tower in enemy_princesses_crop]
 
         return {
             KEY_ELIXIR: elixir_prediction,
@@ -104,7 +122,7 @@ class CloudFlow:
         response = requests.post(url, json=payload)
         return response.json()
 
-    def detect_card(self, card_crop) -> dict:
+    def detect_card(self, card_crop):
         url = f"https://serverless.roboflow.com/{WORKSPACE_NAME}/workflows/{WORKFLOW_CARD_DETECTION}"
         payload = {
             "api_key": ROBOFLOW_API_KEY,
@@ -119,17 +137,33 @@ def detect_elixir(img_elixir_area):
     pixels = img_elixir_area.load()
     w, h = img_elixir_area.size
 
-    filled_columns = 0
+    filled_pixels = 0
 
     for x in range(w):
-        filled_pixels_in_column = 0
+        r, g, b = pixels[x, 0]
+        if (r > 150 and g < 120 and b > 150):
+            filled_pixels += 1
 
-        for y in range(h):
-            r, g, b = pixels[x, y]
-            if ((r > 150 and g < 120 and b > 150) or (r > 200 and g > 200 and b > 200)):
-                filled_pixels_in_column += 1
+    return round(filled_pixels / w, 1)
 
-        if filled_pixels_in_column > h * 0.3:
-            filled_columns += 1
+def detect_ally_tower(img_tower_area):
+    pixels = img_tower_area.load()
+    w, h = img_tower_area.size
 
-    return round(filled_columns / w, 1)
+    filled_pixels = 0
+    for x in range(w):
+        r, g, b = pixels[x, 0]
+        if ((r > 85 and g > 120 and b > 120)):
+            filled_pixels += 1
+    return round(filled_pixels / w, 4)
+
+def detect_enemy_tower(img_tower_area):
+    pixels = img_tower_area.load()
+    w, h = img_tower_area.size
+
+    filled_pixels = 0
+    for x in range(w):
+        r, g, b = pixels[x, 0]
+        if (r >= 200 and g <= 50):
+            filled_pixels += 1
+    return round(filled_pixels / w, 4)

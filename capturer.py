@@ -1,5 +1,8 @@
 from turtle import width
 import pyautogui
+import pygetwindow as gw    
+import win32gui
+
 import time
 
 import config
@@ -10,6 +13,16 @@ class Capturer:
 
     def __init__(self, game_coordinates):
         self.game_coordinates = game_coordinates
+
+    def detect_game_coordinates():
+        win = gw.getWindowsWithTitle("Clash Royale")[0]
+        hwnd = win._hWnd
+        client_rect = win32gui.GetClientRect(hwnd)
+        top_left = win32gui.ClientToScreen(hwnd, (client_rect[0], client_rect[1]))
+        bottom_right = win32gui.ClientToScreen(hwnd, (client_rect[2], client_rect[3]))
+        print("Game Coordinates detected:", top_left, bottom_right)
+        return (top_left, bottom_right)
+
 
     @staticmethod
     def load_field():
@@ -35,10 +48,14 @@ class Capturer:
 
     def get_all_crops(self, screenshot):
         return {
-            "elixir": self.get_elixir_crop(screenshot),
-            "cards": self.get_cards_crop(screenshot),
-            "next_card": self.get_next_card_crop(screenshot),
-            "field": self.get_field_crop(screenshot)
+            KEY_ELIXIR: self.get_elixir_crop(screenshot),
+            KEY_CARDS: self.get_cards_crop(screenshot),
+            KEY_NEXT_CARD: self.get_next_card_crop(screenshot),
+            KEY_FIELD: self.get_field_crop(screenshot),
+            KEY_ALLY_KING: self.get_ally_king_crop(screenshot),
+            KEY_ALLY_PRINCESSES: self.get_ally_princesses_crop(screenshot),
+            KEY_ENEMY_KING: self.get_enemy_king_crop(screenshot),
+            KEY_ENEMY_PRINCESSES: self.get_enemy_princesses_crop(screenshot)
         }
 
     def take_screenshot(self):
@@ -53,8 +70,7 @@ class Capturer:
         x = utils.get_abs_x(img_coords, X_ELIXIR)
         y = utils.get_abs_y(img_coords, Y_ELIXIR)
         w = utils.get_abs_x(img_coords, WIDTH_ELIXIR)
-        h = utils.get_abs_y(img_coords, HEIGHT_ELIXIR)
-        return screenshot.crop((x, y, x+w, y+h))
+        return screenshot.crop((x, y, x+w, y+1))
     
     def get_cards_crop(self, screenshot):
         img_coords = ((0, 0), screenshot.size)
@@ -83,3 +99,39 @@ class Capturer:
         h = utils.get_abs_y(img_coords, HEIGHT_FIELD)
         field = screenshot.crop((x, y, x+w, y+h))
         return field
+
+    def get_ally_king_crop(self, screenshot):
+        img_coords = ((0, 0), screenshot.size)
+        x = utils.get_abs_x(img_coords, X_KING)
+        y = utils.get_abs_y(img_coords, Y_ALLY_KING)
+        w = utils.get_abs_x(img_coords, WIDTH_KING)
+        return screenshot.crop((x, y, x+w, y+1))
+    
+    def get_ally_princesses_crop(self, screenshot):
+        img_coords = ((0, 0), screenshot.size)
+        x = utils.get_abs_x(img_coords, X_LEFT_PRINCESS)
+        y = utils.get_abs_y(img_coords, Y_ALLY_PRINCESS)
+        w = utils.get_abs_x(img_coords, WIDTH_PRINCESS)
+        princesses = []
+        for i in range(2):
+            princesses.append(screenshot.crop((x, y, x+w, y+1)))
+            x = utils.get_abs_x(img_coords, X_RIGHT_PRINCESS)
+        return princesses
+
+    def get_enemy_king_crop(self, screenshot):
+        img_coords = ((0, 0), screenshot.size)
+        x = utils.get_abs_x(img_coords, X_KING)
+        y = utils.get_abs_y(img_coords, Y_ENEMY_KING)
+        w = utils.get_abs_x(img_coords, WIDTH_KING)
+        return screenshot.crop((x, y, x+w, y+1))
+
+    def get_enemy_princesses_crop(self, screenshot):
+        img_coords = ((0, 0), screenshot.size)
+        x = utils.get_abs_x(img_coords, X_LEFT_PRINCESS)
+        y = utils.get_abs_y(img_coords, Y_ENEMY_PRINCESS)
+        w = utils.get_abs_x(img_coords, WIDTH_PRINCESS)
+        princesses = []
+        for i in range(2):
+            princesses.append(screenshot.crop((x, y, x+w, y+1)))
+            x = utils.get_abs_x(img_coords, X_RIGHT_PRINCESS)
+        return princesses

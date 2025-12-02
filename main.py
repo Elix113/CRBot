@@ -9,7 +9,7 @@ import keyboard
 
 def main():
 
-    capturer = Capturer(Capturer.load_field())
+    capturer = Capturer(Capturer.detect_game_coordinates())
     predictor = Predictor(LocalFlow())
     agent = DQNAgent(STATE_VECTOR_LENGTH, ACTION_SIZE)
     agent.load()
@@ -25,7 +25,7 @@ def main():
     while not done:
         screenshot = capturer.take_screenshot()
         screen_crops = capturer.get_all_crops(screenshot)
-        predictions = predictor.get_predictions_async(screen_crops, True)
+        predictions = predictor.get_predictions_async(screen_crops)
         state = State(
             predictions[KEY_ELIXIR], 
             predictions[KEY_CARDS], 

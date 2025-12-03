@@ -11,7 +11,7 @@ class Actioner:
         self.game_coordinates = game_coordinates
 
     def act(self, action, do=True):
-        if (action == ACTION_SIZE-1):
+        if (action >= ACTION_SIZE-1):
             return (-1, -1)
         positions_per_card = ACTION_FIELD_MTRX_H * ACTION_FIELD_MTRX_W
         card = action // positions_per_card
